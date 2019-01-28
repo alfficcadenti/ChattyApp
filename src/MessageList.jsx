@@ -1,10 +1,13 @@
 import React, {Component} from 'react';
+import Message from './Message.jsx';
+
 
 class MessageList extends Component {
   constructor() {
     super();
 
-    console.log(this.props);
+
+    //let messagesHTML = loopMessageList(this.props.messages);
     // state.messages = [
     //   {
     //     type: "incomingMessage",
@@ -44,35 +47,20 @@ class MessageList extends Component {
   }
 
 
-  render() {
+    render() {
+            const messages = this.props.messages.map((message,index) => {
+              return (
+                <Message key={index} content={message.content} username={message.username} />
+              )
+            });
 
-  function loopMessageList(messages) {
-    let output = [];
-     for (let item in messages) {
-        let username = messages[item].props.username;
-        let content = messages[item].props.content;
+        return (
 
-        let divA = "<div className='message'>";
-        let spanU = "<span className='message-username'>"+username+"</span>";
-        let spanC = "<span className='message-content'>"+content+"</span>";
-        let divC = "</div>";
-        output.push(divA+spanU+spanC+divC);
-
-     }
-     return output.join('');
-  }
-  console.log(this.props.messages);
-  let messagesHTML = loopMessageList(this.props.messages);
-    return (
-      <main className="messages">
-
-        {messagesHTML}
-        <div className="message system">
-          Anonymous1 changed their name to nomnom.
-        </div>
-    </main>
-      );
-  }
+            <main className="messages">
+                {messages}
+            </main>
+            );
+    }
 
 }
 export default MessageList;
