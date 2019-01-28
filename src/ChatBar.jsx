@@ -12,7 +12,7 @@ class ChatBar extends Component {
 
   render() {
     //this.state = {value: this.props.defaultUser};
-    let username = this.state.value
+    let username = this.props.defaultUser
     let onKeyPress = this.props.onKeyPress;
     let changeUserName = this.props.changeUserName;
 
