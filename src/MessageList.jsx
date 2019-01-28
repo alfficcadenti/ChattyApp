@@ -3,6 +3,8 @@ import React, {Component} from 'react';
 class MessageList extends Component {
   constructor() {
     super();
+
+    console.log(this.props);
     // state.messages = [
     //   {
     //     type: "incomingMessage",
@@ -41,13 +43,30 @@ class MessageList extends Component {
 
   }
 
+
   render() {
+
+  function loopMessageList(messages) {
+    let output = [];
+     for (let item in messages) {
+        let username = messages[item].props.username;
+        let content = messages[item].props.content;
+
+        let divA = "<div className='message'>";
+        let spanU = "<span className='message-username'>"+username+"</span>";
+        let spanC = "<span className='message-content'>"+content+"</span>";
+        let divC = "</div>";
+        output.push(divA+spanU+spanC+divC);
+
+     }
+     return output.join('');
+  }
+  console.log(this.props.messages);
+  let messagesHTML = loopMessageList(this.props.messages);
     return (
       <main className="messages">
-        <div className="message">
-          <span className="message-username">Anonymous1</span>
-          <span className="message-content">I won't be impressed with technology until I can download food.</span>
-        </div>
+
+        {messagesHTML}
         <div className="message system">
           Anonymous1 changed their name to nomnom.
         </div>
