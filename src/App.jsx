@@ -22,13 +22,15 @@ class App extends Component {
         let content = event.target.value;
         let username = this.state.currentUser.name
         const newMessage = { "username": username, "content": content};
-
-        //const messages = this.state.messages.concat(newMessage)
-        //this.setState({messages: messages})
         this.socket.send(JSON.stringify(newMessage))
+      }
+    }
 
+    changeUserName = (event) => {
 
-
+      if(event.key == 'Enter'){
+        let username = event.target.value;
+        this.state.currentUser.name = username;
       }
     }
 
@@ -64,7 +66,7 @@ class App extends Component {
 
         <MessageList messages={this.state.messages}/>
 
-        <ChatBar defaultUser={this.state.currentUser.name} onKeyPress={this.handleKeyPress}/>
+        <ChatBar defaultUser={this.state.currentUser.name} onKeyPress={this.handleKeyPress} changeUserName={this.changeUserName}/>
 
       </div>
     );
