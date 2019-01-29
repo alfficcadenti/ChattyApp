@@ -49,10 +49,6 @@ class App extends Component {
       if (data.clients) {
         this.setState({users: data.clients})
       }
-      else if (data.color) {
-        this.setState({color: data.color})
-        console.log(data.color)
-      }
       else {
         const messages = this.state.messages.concat(data)
         this.setState({messages: messages})

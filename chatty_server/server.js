@@ -43,23 +43,21 @@ function colorAssign() {
 wss.on('connection', (ws) => {
 
   console.log('Client connected');
-  let userUUID = uuidv4();
-  let userColor = colorAssign();
-  let userColorAssoc = {'user' : userUUID , 'color': userColor}
-  //console.log("THIS USER: ",userColor)
-  userColorDB.push(userColorAssoc)
 
-  console.log(userColorDB)
+  let userColor = colorAssign();
+
+  //Store user-color association in database //I JUST LIKE TO COLLECT DATA!!!!
+  let userUUID = uuidv4();
+  userColorDB.push({'user' : userUUID , 'color': userColor})
 
   sendUserCount();
-
 
   ws.on('message', function incoming(data) {
 
     message = JSON.parse(data);
     let messageUUID = uuidv4();
     message.id = messageUUID;
-    message.userId = userUUID;
+    message.userId = userUUID; //Useful to debug/test that the same user keep the color
     message.color = userColor;
     console.log(message)
 
