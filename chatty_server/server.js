@@ -59,7 +59,7 @@ wss.on('connection', (ws) => {
     message.id = messageUUID;
     message.userId = userUUID; //Useful to debug/test that the same user keep the color
     message.color = userColor;
-    console.log(message)
+
 
     switch(message.type) {
       case "postMessage":

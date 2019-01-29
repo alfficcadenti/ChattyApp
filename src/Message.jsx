@@ -3,9 +3,8 @@ import React, {Component} from 'react';
 class Message extends Component {
 
   render () {
-    console.log(this.props.color)
     var styles = {color:this.props.color,}
-    console.log(styles)
+
 
     if (this.props.type === "incomingMessage" || this.props.type === "postMessage") {
       return (
