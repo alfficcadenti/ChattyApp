@@ -1,9 +1,9 @@
 // server.js
 
 const express = require('express');
-const SocketServer = require('ws').Server;
+const WebSocket = require('ws');
 const uuidv4 = require('uuid/v4');
-uuidv4();
+
 
 // Set the port to 3001
 const PORT = 3001;
@@ -15,13 +15,14 @@ const server = express()
   .listen(PORT, '0.0.0.0', 'localhost', () => console.log(`Listening on ${ PORT }`));
 
 // Create the WebSockets server
-const wss = new SocketServer({ server });
+const wss = new WebSocket.Server({ server });
 
 // Broadcast to all.
 wss.broadcast = function broadcast(data) {
   wss.clients.forEach(function each(client) {
     if (client.readyState) {
-      client.send(data);
+      userCnt = {clients : wss.clients.size}
+      ws.send(JSON.stringify(userCnt));
     }
   });
 };
@@ -33,6 +34,14 @@ wss.on('connection', (ws) => {
 
   console.log('Client connected');
 
+  wss.clients.forEach(function each(client) {
+    if (client.readyState && WebSocket.OPEN) {
+      userCnt = {clients : wss.clients.size}
+      ws.send(JSON.stringify(userCnt));
+      }
+  });
+
+
   ws.on('message', function incoming(data) {
 
     message = JSON.parse(data);
@@ -43,10 +52,13 @@ wss.on('connection', (ws) => {
       case "postMessage":
         console.log(message)
         ws.send(JSON.stringify(message));
+        userCnt = {clients : wss.clients.size}
         wss.clients.forEach(function each(client) {
-          if (client !== ws && client.readyState) {
+          ws.send(JSON.stringify(userCnt));
+          if (client !== ws && client.readyState && WebSocket.OPEN) {
             message.type = "incomingMessage";
             client.send(JSON.stringify(message));
+
           }
         });
         break;
@@ -57,31 +69,24 @@ wss.on('connection', (ws) => {
         console.log(message);
         ws.send(JSON.stringify(message));
         wss.clients.forEach(function each(client) {
-          if (client !== ws && client.readyState) {
+          if (client !== ws && client.readyState && WebSocket.OPEN) {
             message.type = "incomingNotification";
             client.send(JSON.stringify(message));
           }
         });
         break;
 
-
-
-
-
-
       default:
         // show an error in the console if the message type is unknown
         throw new Error("Unknown event type " + data.type);
     }
 
-
-
-
   });
 
 
-
-
   // Set up a callback for when a client closes the socket. This usually means they closed their browser.
-  ws.on('close', () => console.log('Client disconnected'));
+  ws.on('close', () => {
+    console.log('Client disconnected');
+
+  });
 });

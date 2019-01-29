@@ -46,15 +46,23 @@ class App extends Component {
     mySocket.onopen = () => {
       if(mySocket.readyState) {
         console.log('Connected to server');
+        console.log(mySocket.Server)
       }
     }
 
     mySocket.onmessage = (message) => {
+
       let data = JSON.parse(message.data)
-      console.log(data)
-      const messages = this.state.messages.concat(data)
-      console.log(messages);
-      this.setState({messages: messages})
+      //console.log(data.clients)
+      if (data.clients) {
+        this.setState({users: data.clients})
+      }
+      else {
+        const messages = this.state.messages.concat(data)
+        this.setState({messages: messages})
+      }
+
+
     }
   }
 
@@ -68,7 +76,7 @@ class App extends Component {
 
 
       <div>
-        <NavBar />
+        <NavBar users={this.state.users}/>
 
         <MessageList messages={this.state.messages}/>
 
