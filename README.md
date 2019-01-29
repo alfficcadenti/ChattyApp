@@ -10,7 +10,11 @@ npm start
 open http://localhost:3000
 ```
 
-WebSocket in folder ```chatty-server```
+WebSocket to run in folder
+```
+cd chatty-server
+node server.js
+```
 
 
 ### Screenshots
@@ -20,6 +24,8 @@ WebSocket in folder ```chatty-server```
 !["3 Users"](https://github.com/alfficcadenti/ChattyApp/blob/master/public/3%20Users%20Screenshot.png)
 
 !["User Color"](https://github.com/alfficcadenti/ChattyApp/blob/master/public/userColor.png)
+
+!["Images"](https://github.com/alfficcadenti/ChattyApp/blob/master/public/images.png)
 
 
 ### Dependencies
