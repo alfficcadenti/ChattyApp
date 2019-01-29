@@ -17,15 +17,15 @@ const server = express()
 // Create the WebSockets server
 const wss = new WebSocket.Server({ server });
 
-// Broadcast to all.
-wss.broadcast = function broadcast(data) {
+//helper function for the userCount
+function sendUserCount() {
   wss.clients.forEach(function each(client) {
-    if (client.readyState) {
+    if (client.readyState && WebSocket.OPEN) {
       userCnt = {clients : wss.clients.size}
-      ws.send(JSON.stringify(userCnt));
+      client.send(JSON.stringify(userCnt));
     }
   });
-};
+}
 
 // Set up a callback that will run when a client connects to the server
 // When a client connects they are assigned a socket, represented by
@@ -33,13 +33,8 @@ wss.broadcast = function broadcast(data) {
 wss.on('connection', (ws) => {
 
   console.log('Client connected');
+  sendUserCount();
 
-  wss.clients.forEach(function each(client) {
-    if (client.readyState && WebSocket.OPEN) {
-      userCnt = {clients : wss.clients.size}
-      ws.send(JSON.stringify(userCnt));
-      }
-  });
 
 
   ws.on('message', function incoming(data) {
@@ -47,18 +42,18 @@ wss.on('connection', (ws) => {
     message = JSON.parse(data);
     let messageUUID = uuidv4();
     message.id = messageUUID;
+    console.log(message)
 
     switch(message.type) {
       case "postMessage":
-        console.log(message)
+
+        //send as it is to the sender first
         ws.send(JSON.stringify(message));
-        userCnt = {clients : wss.clients.size}
+        //broadcast to ALL after changing the type
         wss.clients.forEach(function each(client) {
-          ws.send(JSON.stringify(userCnt));
           if (client !== ws && client.readyState && WebSocket.OPEN) {
             message.type = "incomingMessage";
             client.send(JSON.stringify(message));
-
           }
         });
         break;
@@ -66,8 +61,9 @@ wss.on('connection', (ws) => {
 
 
       case "postNotification":
-        console.log(message);
+        //send as it is to the sender first
         ws.send(JSON.stringify(message));
+        //broadcast to ALL after changing the type
         wss.clients.forEach(function each(client) {
           if (client !== ws && client.readyState && WebSocket.OPEN) {
             message.type = "incomingNotification";
@@ -87,6 +83,6 @@ wss.on('connection', (ws) => {
   // Set up a callback for when a client closes the socket. This usually means they closed their browser.
   ws.on('close', () => {
     console.log('Client disconnected');
-
+    sendUserCount();
   });
 });

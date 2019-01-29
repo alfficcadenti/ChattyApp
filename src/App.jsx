@@ -12,9 +12,6 @@ class App extends Component {
       currentUser: {name: "Anonymous"}, // optional. if currentUser is not defined, it means the user is Anonymous
       messages: []
     }
-
-
-
   }
 
     handleKeyPress = (event) => {
@@ -27,7 +24,6 @@ class App extends Component {
     }
 
     changeUserName = (event) => {
-
       if(event.key == 'Enter'){
         let oldUserName = this.state.currentUser.name;
         let newUserName = event.target.value;
@@ -40,20 +36,16 @@ class App extends Component {
 
 
   componentDidMount() {
-
     let mySocket = new WebSocket("ws://localhost:3001/");
     this.socket = mySocket;
     mySocket.onopen = () => {
       if(mySocket.readyState) {
         console.log('Connected to server');
-        console.log(mySocket.Server)
       }
     }
 
     mySocket.onmessage = (message) => {
-
       let data = JSON.parse(message.data)
-      //console.log(data.clients)
       if (data.clients) {
         this.setState({users: data.clients})
       }
@@ -61,8 +53,6 @@ class App extends Component {
         const messages = this.state.messages.concat(data)
         this.setState({messages: messages})
       }
-
-
     }
   }
 
@@ -70,10 +60,7 @@ class App extends Component {
 
   render() {
 
-
-
     return (
-
 
       <div>
         <NavBar users={this.state.users}/>
@@ -81,7 +68,6 @@ class App extends Component {
         <MessageList messages={this.state.messages}/>
 
         <ChatBar defaultUser={this.state.currentUser.name} onKeyPress={this.handleKeyPress} changeUserName={this.changeUserName}/>
-
       </div>
     );
   }
