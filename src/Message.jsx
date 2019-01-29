@@ -5,13 +5,25 @@ class Message extends Component {
     super();
   }
 
+
+
   render () {
-    return (
-      <div className='message'>
-                        <span className='message-username'>{this.props.username}</span>
-                        <span className='message-content'>{this.props.content}</span>
-                    </div>
-      )
+
+      if (this.props.type === "incomingMessage" || this.props.type === "postMessage") {
+        return (
+          <div className='message'>
+            <span className='message-username'>{this.props.username}</span>
+            <span className='message-content'>{this.props.content}</span>
+          </div>
+          );
+      }
+      else {
+        return (
+          <div className='message system'>
+            <span>{this.props.content}</span>
+          </div>
+        );
+      }
   }
 
 }

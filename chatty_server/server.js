@@ -34,18 +34,49 @@ wss.on('connection', (ws) => {
   console.log('Client connected');
 
   ws.on('message', function incoming(data) {
+
+    message = JSON.parse(data);
     let messageUUID = uuidv4();
-    let message = JSON.parse(data);
     message.id = messageUUID;
-    console.log(message);
 
-    ws.send(JSON.stringify(message));
+    switch(message.type) {
+      case "postMessage":
+        console.log(message)
+        ws.send(JSON.stringify(message));
+        wss.clients.forEach(function each(client) {
+          if (client !== ws && client.readyState) {
+            message.type = "incomingMessage";
+            client.send(JSON.stringify(message));
+          }
+        });
+        break;
 
-    wss.clients.forEach(function each(client) {
-      if (client !== ws && client.readyState) {
-        client.send(data);
-      }
-    });
+
+
+      case "postNotification":
+        console.log(message);
+        ws.send(JSON.stringify(message));
+        wss.clients.forEach(function each(client) {
+          if (client !== ws && client.readyState) {
+            message.type = "incomingNotification";
+            client.send(JSON.stringify(message));
+          }
+        });
+        break;
+
+
+
+
+
+
+      default:
+        // show an error in the console if the message type is unknown
+        throw new Error("Unknown event type " + data.type);
+    }
+
+
+
+
   });
 
 

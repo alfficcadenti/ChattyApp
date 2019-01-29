@@ -21,7 +21,7 @@ class App extends Component {
       if(event.key == 'Enter'){
         let content = event.target.value;
         let username = this.state.currentUser.name
-        const newMessage = { "username": username, "content": content};
+        const newMessage = {'type': "postMessage", 'username': username, 'content': content};
         this.socket.send(JSON.stringify(newMessage))
       }
     }
@@ -29,8 +29,12 @@ class App extends Component {
     changeUserName = (event) => {
 
       if(event.key == 'Enter'){
-        let username = event.target.value;
-        this.state.currentUser.name = username;
+        let oldUserName = this.state.currentUser.name;
+        let newUserName = event.target.value;
+        this.state.currentUser.name = newUserName;
+        let content = oldUserName+" changed their name to "+newUserName;
+        let newMessage = {'type': 'postNotification', 'content': content};
+        this.socket.send(JSON.stringify(newMessage))
       }
     }
 
@@ -47,7 +51,9 @@ class App extends Component {
 
     mySocket.onmessage = (message) => {
       let data = JSON.parse(message.data)
+      console.log(data)
       const messages = this.state.messages.concat(data)
+      console.log(messages);
       this.setState({messages: messages})
     }
   }
