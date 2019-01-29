@@ -8,7 +8,7 @@ class MessageList extends Component {
 
       const messages = this.props.messages.map((message,index) => {
         return (
-          <Message key={index} content={message.content} username={message.username} type={message.type}/>
+          <Message key={index} content={message.content} username={message.username} type={message.type} color={message.color}/>
         )
       });
 

@@ -8,6 +8,9 @@ const uuidv4 = require('uuid/v4');
 // Set the port to 3001
 const PORT = 3001;
 
+//USER DB
+const userColorDB = [];
+
 // Create a new express server
 const server = express()
    // Make the express server serve static assets (html, javascript, css) from the /public folder
@@ -27,14 +30,28 @@ function sendUserCount() {
   });
 }
 
+function colorAssign() {
+  const colorArr = ["#FF0000","#FFA500","#00FF00","#0000FF"];
+  let userN = wss.clients.size % 4;
+  let content = {'color' : colorArr[userN]};
+  return colorArr[userN];
+}
+
 // Set up a callback that will run when a client connects to the server
 // When a client connects they are assigned a socket, represented by
 // the ws parameter in the callback.
 wss.on('connection', (ws) => {
 
   console.log('Client connected');
-  sendUserCount();
+  let userUUID = uuidv4();
+  let userColor = colorAssign();
+  let userColorAssoc = {'user' : userUUID , 'color': userColor}
+  //console.log("THIS USER: ",userColor)
+  userColorDB.push(userColorAssoc)
 
+  console.log(userColorDB)
+
+  sendUserCount();
 
 
   ws.on('message', function incoming(data) {
@@ -42,6 +59,8 @@ wss.on('connection', (ws) => {
     message = JSON.parse(data);
     let messageUUID = uuidv4();
     message.id = messageUUID;
+    message.userId = userUUID;
+    message.color = userColor;
     console.log(message)
 
     switch(message.type) {
