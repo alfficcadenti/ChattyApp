@@ -8,8 +8,6 @@ const uuidv4 = require('uuid/v4');
 // Set the port to 3001
 const PORT = 3001;
 
-//USER DB
-const userColorDB = [];
 
 // Create a new express server
 const server = express()
@@ -33,7 +31,6 @@ function sendUserCount() {
 function colorAssign() {
   const colorArr = ["#FF0000","#FFA500","#00FF00","#0000FF"];
   let userN = wss.clients.size % 4;
-  let content = {'color' : colorArr[userN]};
   return colorArr[userN];
 }
 
@@ -46,9 +43,8 @@ wss.on('connection', (ws) => {
 
   let userColor = colorAssign();
 
-  //Store user-color association in database //I JUST LIKE TO COLLECT DATA!!!!
+  //Store user-color association in database //I JUST LIKE TO COLLECT DATA! YUMMY DATA MMM!!!!!
   let userUUID = uuidv4();
-  userColorDB.push({'user' : userUUID , 'color': userColor})
 
   sendUserCount();
 

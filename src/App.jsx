@@ -17,9 +17,11 @@ class App extends Component {
     handleKeyPress = (event) => {
       if(event.key == 'Enter'){
         let content = event.target.value;
+        document.getElementsByName(event.target.name)[0].value=''
         let username = this.state.currentUser.name
         const newMessage = {'type': "postMessage", 'username': username, 'content': content};
         this.socket.send(JSON.stringify(newMessage))
+
       }
     }
 
@@ -52,6 +54,7 @@ class App extends Component {
       else {
         const messages = this.state.messages.concat(data)
         this.setState({messages: messages})
+        window.scrollTo(0,document.querySelector(".messages").scrollHeight);
       }
     }
   }
