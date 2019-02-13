@@ -3,6 +3,9 @@ ChattyApp - React Project
 
 A minimal and light chat build on ReactJS using WebSocket.
 
+
+## Getting Started
+
 Install the dependencies and start the server.
 ```
 npm install
@@ -17,21 +20,12 @@ node server.js
 ```
 
 
-### Screenshots
-
-!["4 Users"](https://github.com/alfficcadenti/ChattyApp/blob/master/public/4%20Users%20Screenshot.png)
-
-!["3 Users"](https://github.com/alfficcadenti/ChattyApp/blob/master/public/3%20Users%20Screenshot.png)
-
-!["User Color"](https://github.com/alfficcadenti/ChattyApp/blob/master/public/userColor.png)
-
-!["Images"](https://github.com/alfficcadenti/ChattyApp/blob/master/public/images.png)
-
 
 ### Dependencies
 
 * React
 * React-DOM
+
 
 ### Dev-Dependencies
 
@@ -48,3 +42,17 @@ node server.js
 * Node-sass
 * Sass-loader
 * Sockjs-client
+
+
+### Screenshots
+
+!["4 Users"](https://github.com/alfficcadenti/ChattyApp/blob/master/public/4%20Users%20Screenshot.png)
+
+
+!["3 Users"](https://github.com/alfficcadenti/ChattyApp/blob/master/public/3%20Users%20Screenshot.png)
+
+
+!["User Color"](https://github.com/alfficcadenti/ChattyApp/blob/master/public/userColor.png)
+
+
+!["Images"](https://github.com/alfficcadenti/ChattyApp/blob/master/public/images.png)
